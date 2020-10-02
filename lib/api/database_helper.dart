@@ -14,12 +14,12 @@ class DataBase {
   }
 
   
-  var message = "";
-  var status ;
+  var message = "هنالك خطأ في الاتصال";
+  var status = false  ;
   login({String username, String password}) async {
     try {
       var req = await http.post(
-          "http://agatha-academy.kf.iq/PhoneRequest/login.php",
+          "https://agatha-academy.kf.iq/PhoneRequest/login.php",
           body: {"username": "$username", "password": "$password"});
 
       int userid = int.tryParse(req.body);
@@ -63,7 +63,7 @@ class DataBase {
 
     try {
       var req = await http.post(
-          "http://agatha-academy.kf.iq/PhoneRequest/locationsUpdate.php",
+          "https://agatha-academy.kf.iq/PhoneRequest/locationsUpdate.php",
           body: {"UserID": value.toString(), "lat": lat.toString(),"lng":lng.toString()});
 
       
