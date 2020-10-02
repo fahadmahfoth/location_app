@@ -19,7 +19,7 @@ class DataBase {
   login({String username, String password}) async {
     try {
       var req = await http.post(
-          "https://test121121212121.000webhostapp.com/alkafeel/al-kafeel_map/PhoneRequest/login.php",
+          "http://agatha-academy.kf.iq/PhoneRequest/login.php",
           body: {"username": "$username", "password": "$password"});
 
       int userid = int.tryParse(req.body);
@@ -63,7 +63,7 @@ class DataBase {
 
     try {
       var req = await http.post(
-          "https://test121121212121.000webhostapp.com/alkafeel/al-kafeel_map/PhoneRequest/locationsUpdate.php",
+          "http://agatha-academy.kf.iq/PhoneRequest/locationsUpdate.php",
           body: {"UserID": value.toString(), "lat": lat.toString(),"lng":lng.toString()});
 
       
