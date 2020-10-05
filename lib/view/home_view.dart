@@ -17,10 +17,10 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool sendlocation = false;
-  bool isLoading = false;
   DataBase database = DataBase();
 
   var userid;
+ 
 
   read() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,7 +33,35 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+
+
+ readStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'status';
+    final value = prefs.get(key);
+    print("Fahad : $value");
+    
+    if (value == 1) {
+      getCurrentLocation();
+      setState(() {
+        sendlocation = true ;
+        
+      });
+
+      // print(userid);
+    }else {
+
+
+       setState(() {
+        sendlocation = false ;
+      });
+
+    }
+  }
+
   onpressed() {
+
+    database.updateStatus();
     if (sendlocation) {
       close();
       setState(() {
@@ -135,6 +163,7 @@ class _HomeViewState extends State<HomeView> {
     //  _locationTracker.changeSettings(accuracy: LocationAccuracy.high,distanceFilter: 1000000,interval: 1000000);
 
     read();
+    readStatus();
   }
 
   @override
@@ -170,6 +199,36 @@ class _HomeViewState extends State<HomeView> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
+
+
+          sendlocation
+              ? Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child:Container(
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          'الحالة : مفعل',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child:Container(
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          'الحالة : غير مفعل',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  
+                ),
 
            sendlocation
               ? Padding(
@@ -229,14 +288,14 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   !sendlocation
                       ? Text(
-                          "مغلق",
+                          "تفعيل",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold),
                         )
                       : Text(
-                          "مفعل",
+                          "اغلاق",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
