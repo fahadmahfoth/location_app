@@ -11,8 +11,7 @@ class DataBase {
     prefs.setInt(key, value);
   }
 
-
-    _saveStatus(int token) async {
+  _saveStatus(int token) async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'status';
     final value = token;
@@ -21,6 +20,8 @@ class DataBase {
 
   var message = "هنالك خطأ في الاتصال";
   var status = false;
+  var status2 = true;
+  var logout = false;
   login({String username, String password}) async {
     try {
       var req = await http.post(
@@ -61,14 +62,19 @@ class DataBase {
             "lng": lng.toString()
           });
 
+      if (req.body.toString().contains("USER_NOT_FOUND") ||
+          req.body.toString().contains("NOT_FOUND_LAT_LANG_VAL") ||
+          req.body.toString().contains("NOT_FOUND_USERID")) {
+        logout = true;
+        prefs.remove('userid');
+      }
       message = req.body.toString();
       print(message);
-      if(req.body is int ){
 
-     
-
+      if (int.parse(req.body) == 0) {
+        status2 = false;
+        _saveStatus(int.parse(req.body));
       }
-     
 
       return 0;
     } on SocketException {
@@ -90,9 +96,10 @@ class DataBase {
           body: {"UserID": value.toString()});
 
       message = req.body.toString();
+
       print(message);
 
-          _saveStatus(int.parse(req.body));
+      _saveStatus(int.parse(req.body));
 
       return 0;
     } on SocketException {

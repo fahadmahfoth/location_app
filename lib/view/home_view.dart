@@ -10,6 +10,8 @@ import 'package:status_alert/status_alert.dart';
 import 'dart:math' show cos, sqrt, asin;
 import 'package:edge_alert/edge_alert.dart';
 
+import 'login.dart';
+
 class HomeView extends StatefulWidget {
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -119,21 +121,41 @@ class _HomeViewState extends State<HomeView> {
           double totalDistance = calculateDistance(
               lat, lng, locationData.latitude, locationData.longitude);
 
-          if (totalDistance > 0.05) {
+          if (totalDistance > 0.02) {
             print(totalDistance);
            
 
             setState(() {
               lat = locationData.latitude;
+
               lng = locationData.longitude;
+
+
             });
 
             database.updateLocation(lat: lat, lng: lng). whenComplete((){
-               EdgeAlert.show(context,
+
+            database.logout ? Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) {
+                              
+                                return LoginPage();
+                              },
+                            ),
+                          ):   database.status2 ? EdgeAlert.show(context,
                 title: 'تنبيه',
                 description: '${database.message}',
                 icon: Icons.send,
+                gravity: EdgeAlert.TOP):EdgeAlert.show(context,
+                title: 'تنبيه',
+                description: 'لاعادة التفعيل اضغط على الزرفي وسط الشاشة',
+                icon: Icons.send,
                 gravity: EdgeAlert.TOP);
+
+                setState(() {
+                 ! database.status2  ? sendlocation = false :sendlocation= true ;
+                });
             });
 
             

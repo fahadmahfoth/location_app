@@ -1,3 +1,4 @@
+import 'package:edge_alert/edge_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:locationapp/api/database_helper.dart';
@@ -5,6 +6,9 @@ import 'package:locationapp/api/database_helper.dart';
 import 'home_view.dart';
 
 class LoginPage extends StatefulWidget {
+
+  final message ;
+  LoginPage({this.message});
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -13,8 +17,25 @@ class _LoginPageState extends State<LoginPage> {
 
     DataBase database = DataBase();
       bool isLooging = false;
+
+
+      
     TextEditingController _usernameController = TextEditingController() ;
     TextEditingController _passwordController = TextEditingController() ;
+
+    @override
+  // void initState() {
+     
+  //             widget.message!= null ? EdgeAlert.show(context,
+  //               title: 'تنبيه',
+  //               description: widget.message,
+  //               icon: Icons.send,
+  //               gravity: EdgeAlert.TOP):print("جديد");
+
+      
+
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

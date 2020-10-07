@@ -3,11 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:locationapp/view/home_view.dart';
 import 'package:locationapp/view/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 
 
+void callbackDispatcher() {
+  Workmanager.executeTask((task, inputData) {
+    print("Native called background task: "); //simpleTask will be emitted here.
+    return Future.value(true);
+  });
+}
 
-void main() => runApp(App());
+
+
+void main() {
+
+WidgetsFlutterBinding.ensureInitialized();
+ 
+
+  
+  Workmanager.initialize(
+    callbackDispatcher, // The top level function, aka callbackDispatcher
+    isInDebugMode: false,
+
+     // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  );
+   
+  Workmanager.registerOneOffTask("1", "simpleTask",); //Android only (see below)
+  runApp(App());
+}
+
 
 
 
